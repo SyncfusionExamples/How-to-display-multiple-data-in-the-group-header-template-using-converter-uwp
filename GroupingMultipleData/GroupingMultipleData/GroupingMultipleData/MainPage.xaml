@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:GroupingMultipleData"
+             xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:dataSource="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
+             x:Class="GroupingMultipleData.MainPage">
+    <ContentPage.BindingContext>
+        <local:EmployeeViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:GroupHeaderConverter x:Key="TemplateConverter"/>
+            <local:GroupHeaderImageConverter x:Key="ImageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid >
+            <syncfusion:SfListView x:Name="listView" ItemSize="80" 
+                                   SelectionMode="Single"
+                                   AllowGroupExpandCollapse="True"
+                                   GroupHeaderSize="60"
+                                   ItemsSource="{Binding EmployeeInfo}" ItemSpacing="2">
+                <syncfusion:SfListView.DataSource>
+                    <dataSource:DataSource>
+                        <dataSource:DataSource.GroupDescriptors>
+                            <dataSource:GroupDescriptor PropertyName="GroupingData.Level"/>
+                        </dataSource:DataSource.GroupDescriptors>
+                    </dataSource:DataSource>
+                </syncfusion:SfListView.DataSource>
+                <syncfusion:SfListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding .,Converter={StaticResource ImageConverter}}" Grid.RowSpan="2" HeightRequest="15" WidthRequest="15"/>
+                                    <Label x:Name="grouplabel" Grid.Column="1" Grid.Row="0"
+                                           Text="{Binding .,Converter={StaticResource TemplateConverter}}"
+                                           FontAttributes="Bold"  FontSize="Medium"
+                                           VerticalOptions="Center" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding Key}" Grid.Column="1" Grid.Row="1"
+                                           FontAttributes="Bold"  FontSize="Medium"
+                                           VerticalOptions="Start" HorizontalOptions="Start"/>
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </syncfusion:SfListView.GroupHeaderTemplate>
+
+                <syncfusion:SfListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Grid RowSpacing="1" Padding="15,0,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid RowSpacing="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid BackgroundColor="Navy">
+                                            <Label Text="{Binding DisplayString}" TextColor="White"
+												FontSize="20" VerticalTextAlignment="Center"
+												HorizontalTextAlignment="Center"/>
+                                        </Grid>
+                                        <Grid Grid.Column="1" RowSpacing="1" Padding="10,0,0,0"
+                                                  VerticalOptions="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Label LineBreakMode="NoWrap"
+                                                       TextColor="#474747" 
+                                                       Text="{Binding EmployeeName}">
+                                            </Label>
+                                            <Label Grid.Row="1" Grid.Column="0"
+                                                       TextColor="#474747" LineBreakMode="NoWrap"
+                                                       Text="{Binding ContactNumber}">
+                                            </Label>
+                                            <Label Grid.Row="2" Grid.Column="0"
+                                                       TextColor="#474747" LineBreakMode="NoWrap"
+                                                       Text="{Binding GroupingData.Designation}"/>
+                                            <Label Grid.Row="3" Grid.Column="0"
+                                                       TextColor="#474747" LineBreakMode="NoWrap"
+                                                       Text="{Binding GroupingData.Level}"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </syncfusion:SfListView.ItemTemplate>
+            </syncfusion:SfListView>
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>
